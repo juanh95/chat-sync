@@ -1,0 +1,4 @@
+venv_chatsyncdev
+__pycache__
+backup_creds.json
+db_creds1.json
