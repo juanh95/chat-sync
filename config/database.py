@@ -1,5 +1,5 @@
 import json 
-from mongoengine import connect
+from mongoengine import connect, Document, StringField
 from pymongo import MongoClient
 
 def connect_db_with_mongoengine():
