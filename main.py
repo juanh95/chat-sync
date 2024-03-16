@@ -1,5 +1,5 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 app = FastAPI() 
 
@@ -32,6 +32,10 @@ manager = ConnectionManager()
 @app.get("/")
 async def get():
    return HTMLResponse(html)
+
+@app.get("/testAPIEndpoint")
+def login():
+   return JSONResponse("you pinged the testAPIEndpoint")
 
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
