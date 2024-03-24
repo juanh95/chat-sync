@@ -43,6 +43,7 @@ Here's a streamlined guide to get you started with a clean development environme
    3. Install Project Dependencies (Inside the Container):
       - Once connected to the development container, you'll need to install the project's dependencies listed in the requirements.txt file. Open the integrated terminal within the container and run the following command:
       ```
+      sudo apt-get update && sudo apt-get install pip
       pip install -r requirements.txt
       ```
    4. Congratulations! 
