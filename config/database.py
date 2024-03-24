@@ -10,7 +10,7 @@ def connect_db_with_mongoengine():
    """
    try:
       # Load MongoDB credentials from the JSON file
-      with open("backup_creds.json", "r") as rf:
+      with open("database_creds.json", "r") as rf:
          db_creds = json.load(rf)
 
       # Extract the information into variables
