@@ -62,7 +62,8 @@ uvicorn main:app
 We use Postman to assist with testing the endpoints. 
 https://www.postman.com/downloads/
 
-
+## Viewing Docs 
+You can view the available API endpoints by visiting http://localhost:8000/docs (or the IP/port the server is listening on your machine)
 
 
 
