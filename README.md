@@ -51,6 +51,17 @@ Here's a streamlined guide to get you started with a clean development environme
       - The container environment is pre-configured with the necessary tools and dependencies based on the .devcontainer.json file. 
       - You can now start developing and testing the project efficiently.
 
+## Running the Project 
+In the main directory, start the project by running the following command in the terminal: 
+
+```
+uvicorn main:app
+```
+
+## Testing API Endpoints 
+We use Postman to assist with testing the endpoints. 
+https://www.postman.com/downloads/
+
 
 
 
