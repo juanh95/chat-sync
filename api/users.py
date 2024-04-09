@@ -19,7 +19,13 @@ async def signup(user_data: dict):
 
    try: 
       user = User(**user_data).create()
-      return {"message": "User created successfully", "data": user}
+
+      # Create a dictionary containing the desired fields
+      response_data = {"message": "User created successfully", "data": {}}
+      response_data["data"]["username"] = user.username
+      response_data["data"]["email"] = user.email
+      
+      return response_data
    except Exception as e: 
       print(f"Error creating user: {e}")
       raise HTTPException(status_code=500, detail="Internal server error")
