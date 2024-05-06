@@ -10,3 +10,6 @@ class Message(Document):
       'collection' : 'messages'
    }
 
+   def create(self):
+      return self.save()
+

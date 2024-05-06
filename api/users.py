@@ -29,7 +29,17 @@ async def signup(user_data: dict):
    except Exception as e: 
       print(f"Error creating user: {e}")
       raise HTTPException(status_code=500, detail="Internal server error")
-   
+
+@router.get("/user/{user_id}")
+async def get_user(user_id: str):
+   existing_user = User.objects.filter(id=user_id).first()
+   if existing_user:
+      print(existing_user)
+      print(f"User ID is: {existing_user.id}")
+      return (f"User ID is: {existing_user.id}")
+   else:
+      raise HTTPException(status_code=404, detail="User was not found")
+
 @router.post("/user/login")
 async def login(login_data: dict): 
    username = login_data.get("username")
@@ -46,6 +56,7 @@ async def login(login_data: dict):
       raise HTTPException(status_code=400, detail="Invalid username or password")
    
    access_token = create_access_token({"username": user.username})
+   print(f"/user/login for {username} was successful")
    return {"access_token": access_token, "token_type": "bearer"}
 
 
