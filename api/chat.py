@@ -1,5 +1,11 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Path
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Path, Query, HTTPException, WebSocketException, status
 import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+ACCESS_CODE = os.environ.get("ACCESS_CODE")
 
 router = APIRouter()
 
@@ -23,16 +29,23 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
-@router.websocket("/chat/{client_id}")
-async def web_socket_endpoint(websocket: WebSocket, client_id: int):
-   await manager.connect(websocket)
+async def check_access_code(access_code: str = Query(None)):
+    """
+    Checks if the provided access code is valid.
+    """
+    if access_code != ACCESS_CODE:
+      raise WebSocketException(code=4001, reason="Invalid access code")
+
+@router.websocket("/chat/{username}")
+async def web_socket_endpoint(websocket: WebSocket, username: str, access_code: str = Query(None, description="The access code of the week")):
+   await check_access_code(access_code)
    try:
+      await manager.connect(websocket)
       while True:
          data = await websocket.receive_text()
          # await manager.send_personal_message(f"You wrote {data}", websocket)
-         # await manager.broadcast(f'{data["date_time"]} From: {data["from_user_id"]}: {data["message_data"]}')
-         await manager.broadcast(f'User said: {data}')
+         await manager.broadcast(f'{username} said: {data}')
    except WebSocketDisconnect: 
       manager.disconnect(websocket)
-      await manager.broadcast(f"Client #{client_id} left the chat")
+      await manager.broadcast(f"{username} left the chat")
    
