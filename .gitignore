@@ -4,5 +4,4 @@ __pycache__
 database_creds.json
 static-content
 security/config.py
-models/
 config/

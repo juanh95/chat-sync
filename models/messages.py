@@ -1,6 +1,7 @@
-from mongoengine import * 
+from mongoengine import StringField, DateTimeField, ObjectIdField
+from models.base_model import MongoBaseModel
 
-class Message(Document):
+class Message(MongoBaseModel):
    message_text = StringField(required=True)
    from_user_id = ObjectIdField(required=True)
    to_user_id = ObjectIdField(required=True)
