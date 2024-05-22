@@ -5,7 +5,12 @@ from passlib.context import CryptContext
 from models.users import User
 from datetime import timedelta, datetime
 
-from .config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, ACCESS_CODE
+import os
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
+ALGORITHM = os.environ.get("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("ACCESS_TOKEN_EXPIRE_MINUTES"))
+ACCESS_CODE = os.environ.get("ACCESS_CODE")
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")  # Define token URL
@@ -15,7 +20,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def create_access_token(data: dict):
    to_encode = data.copy()
-   expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+   expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
    to_encode.update({"exp": expire.timestamp()})
    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
    return encoded_jwt
@@ -35,3 +40,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
       return User.objects.get(username=username)
    except JWTError:
       raise credentials_exception
+   except Exception as e: 
+      print(f"An unexpected error occurred: {e}")
+      raise e
+
+   

@@ -5,7 +5,9 @@ from config import database
 
 database.connect_db_with_mongoengine()
 
+# Include origins for CORS 
 origins = ["http://localhost:5173"] 
+
 # Create an instance of a FastAPI app 
 app = FastAPI() 
 
