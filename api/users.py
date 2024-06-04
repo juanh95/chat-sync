@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse, RedirectResponse
 
 from models.users import User
 from schemas.auth import LoginData, SignUpData
@@ -100,10 +101,20 @@ async def login(login_data:LoginData):
 
     if not user or not verify_password(login_data.password, user.password):
         raise HTTPException(status_code=400, detail="Invalid username or password")
-
+    
     access_token = create_access_token({"username": user.username})
+    
+    response = JSONResponse({"message": "Login successful", "token": access_token})
+    
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,  # Make it HTTP-only for security
+        # secure=True  # Send only over HTTPS (in production)
+    )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return response
+
 
 
 

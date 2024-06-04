@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api import users, chat, access
 from config import database
+import os
 
 database.connect_db_with_mongoengine()
 
 # Include origins for CORS 
-origins = ["http://localhost:5173"] 
+frontend_url = os.environ.get("FRONTEND_URL")
+origins = ["http://localhost:5173", frontend_url] 
 
 # Create an instance of a FastAPI app 
 app = FastAPI() 
